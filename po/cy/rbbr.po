@@ -99,7 +99,7 @@ msgstr "/_Golwg/_Gwahannydd1"
 
 #: lib/rbbr/ui/gtk/browser.rb:82 lib/rbbr/ui/gtk/browser.rb:92
 msgid "/_View/Go _Back"
-msgstr "/_Golwg/Mynd _Nôl"
+msgstr "/_Golwg/Mynd _NÃ´l"
 
 #: lib/rbbr/ui/gtk/browser.rb:83 lib/rbbr/ui/gtk/browser.rb:93
 msgid "/_View/Go _Forward"
@@ -131,7 +131,7 @@ msgstr "/_Cymorth/_Ynghylch"
 
 #: lib/rbbr/ui/gtk/browser.rb:106
 msgid "Go back"
-msgstr "Mynd yn ôl"
+msgstr "Mynd yn Ã´l"
 
 #: lib/rbbr/ui/gtk/browser.rb:109
 msgid "Go forward"
