@@ -226,8 +226,8 @@ module RBBR
 	Kernel.catch( :prune ) do
 	  block.call( super_module, modul, :in )
 	  if sub_modules
-	    sub_modules.sort do |x, y|
-	      x.name <=> y.name
+	    sub_modules.sort_by do |mod|
+	      mod.name.to_s
 	    end.each do |sub_module|
 	      _each( modul, sub_module, &block )
 	    end
