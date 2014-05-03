@@ -107,7 +107,7 @@ module GTK
     
       stocks.each do |mod_stock|
         mod_stock.constants.sort.each do |name|
-          stock = mod_stock.module_eval(name)
+          stock = mod_stock.module_eval(name.to_s)
           value = ""
           accel = ""
           begin
@@ -119,7 +119,7 @@ module GTK
           rescue ArgumentError
           end
           append([render_icon(stock, Gtk::IconSize::MENU, value), 
-                   mod_stock.name + "::" + name, 
+                   mod_stock.name.to_s + "::" + name.to_s, 
                    value, accel, ":" + mod_stock.const_get(name).to_s
                  ])
         end
