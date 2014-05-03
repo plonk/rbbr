@@ -62,7 +62,8 @@ module GTK
 	  else
 	    @buffer.insert(iter, ", ", 'title', 'large')
 	  end
-	  @buffer.insert(iter, mod.name, 'link', 'large')
+          module_name = mod.name.nil? || mod.name.empty? ? mod.to_s : mod.name
+	  @buffer.insert(iter, module_name, 'link', 'large')
 	end
       end
     end
