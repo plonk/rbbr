@@ -16,6 +16,9 @@ podir = srcdir_root + "/po/"
 modir = srcdir_root + "/data/locale/%s/LC_MESSAGES/"
 ruby = File.join(Config::CONFIG['bindir'], Config::CONFIG['RUBY_INSTALL_NAME'])
 rmsgfmt = File.join(Config::CONFIG['bindir'], 'rmsgfmt')
+if !File.exist? rmsgfmt
+  rmsgfmt = nil
+end
 
 #
 # Create mo files.
@@ -31,7 +34,12 @@ begin
         Dir.mkdir(molangdir[0..i].join("/")) unless FileTest.exist?(molangdir[0..i].join("/"))
       end
     }
-    system("#{ruby} #{rmsgfmt} po/#{lang}/#{basename}.po -o #{modir % lang}#{basename}.mo")
+    if rmsgfmt
+      system("#{ruby} #{rmsgfmt} po/#{lang}/#{basename}.po -o #{modir % lang}#{basename}.mo")
+    else
+      puts "rmsgfmt po/#{lang}/#{basename}.po -o #{modir % lang}#{basename}.mo"
+      system("rmsgfmt po/#{lang}/#{basename}.po -o #{modir % lang}#{basename}.mo")
+    end
   end
 rescue LoadError
   puts "L10n is not supported on this environment."
