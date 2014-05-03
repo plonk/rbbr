@@ -1,0 +1,42 @@
+= class Gst::Plugin
+Dynamically loadable Elements
+
+== Object Hierarchy
+* Object
+  * GLib::Boxed
+    * Gst::Plugin
+
+== Instance Methods
+--- ==(plugin)
+    This method returns true if two Gst::Plugin objects are refered by the same file, false otherwise.
+    * Returns: true if two Gst::Plugin objects are refered by the same file, false otherwise.
+
+--- each_feature { |plugin_feature| ... }
+    Calls the block for each feature this plugin provides, passing
+    a reference to the Gst::PluginFeature object as parameter.
+    * Returns: always nil.
+
+--- features
+    Gets a list of all the features that this plugin provides.
+    * Returns: an array of Gst::PluginFeature objects.
+
+--- filename
+    This method returns the file name where the plugin cames from.
+    * Returns: the file name where the plugin cames from.
+
+--- loaded?
+    This method returns true if the plugin is loaded into memory, false otherwise.
+    * Returns: true if the plugin is loaded into memory, false otherwise.
+
+--- longname
+    This method returns the long name (descriptive) of the plugin.
+    * Returns: the long name (descriptive) of the plugin.
+
+--- name
+    This method returns the (short) name of the plugin.
+    * Returns: the (short) name of the plugin.
+
+== See Also
+((<Gst>)).
+
+- ((<lrz>))

@@ -1,0 +1,24 @@
+= class Gtk::MenuBar
+The Gtk::MenuBar is a subclass of Gtk::MenuShell which contains one to many Gtk::MenuItem. The result is a standard menu bar which can hold many menu items. 
+
+== Object Hierarchy
+* Object
+  * GLib::Instantiatable
+    * GLib::Object
+      * Gtk::Object
+        * Gtk::Widget
+          * Gtk::Container
+            * Gtk::MenuShell
+              * Gtk::MenuBar
+
+== Class Methods
+--- Gtk::MenuBar.new
+    Creates the new Gtk::MenuBar
+    * Returns: the Gtk::MenuBar
+
+== See Also
+* Gtk::MenuShell
+* Gtk::Menu
+* Gtk::MenuItem
+
+- ((<Masao>))

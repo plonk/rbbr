@@ -1,0 +1,110 @@
+= class Gst::ElementFactory
+Creates Gst::Element instances.
+
+== Object Hierarchy
+* Object
+  * GLib::Instantiatable
+    * GLib::Object
+      * Gst::PluginFeature
+        * Gst::ElementFactory
+
+== Class Methods
+--- Gst::ElementFactory.find(factory_name)
+    Searches for an element factory of the given name.
+    * factory_name: a name of an existing factory.  
+    * Returns: a Gst::ElementFactory object if found, nil otherwise.
+
+--- Gst::ElementFactory.make(factory_name, element_name)
+    Creates a new Gst::Element of the type defined by the given element factory.
+    If element name is ommited (or nil), then the element will receive a guaranteed 
+    unique name, consisting of the element factory name and a number. 
+    If name is given, it will be given the name supplied.
+    	# Creates a 'mad' GStreamer element, named 'foo':
+    	elem1 = Gst::ElementFactory.make("mad", "foo")
+    	  
+    	# This line does exactly the same thing:
+    	elem2 = Gst::ElementFactory.find("mad").create("foo")
+    * factory_name: a name of an existing factory. 
+    * element_name: a name which will be attributed to the element.  
+    * Returns: a newly created object based on Gst::Element.
+
+== Instance Methods
+--- create(element_name=nil)
+    Creates a new element of the type defined by the element factory.
+    If element name is ommited (or nil), then the element will receive a guaranteed 
+    unique name, consisting of the element factory name and a number. 
+    If name is given, it will be given the name supplied.
+    * element_name: a name which will be attributed to the element.  
+    * Returns: a newly created object based on Gst::Element.
+
+--- details
+    Gets some public information about the factory, 
+    mostly for the benefit of editors.
+    This information is encapsulated in a Hash object, 
+    with the following (String) keys:
+    * longname: long (English) element name.
+    * klass: type of element, as hierarchy.
+    * license: license under which the element is provided.
+    * description: a short description about the element.
+    * version: version of the element.
+    * author: some information about the author(s).
+    * copyright: some copyright details (year, etc..).
+    Here is an example.
+    	# Prints all details related to the 'mad' element:
+    	Gst::ElementFactory.find("mad").details do |k, v| 
+    		p "#{k}: #{v}"
+    	end
+    * Returns: a Hash.
+
+--- each_pad_template { |pad_template| ... }
+    Calls the block for each pad template of the factory, passing a
+    reference to the Gst::PadTemplate as parameter.
+    * Returns: always nil.
+
+--- pad_templates
+    Requests all pad templates of factory.
+    * Returns: an array of Gst::PadTemplate objects.
+
+--- rank
+    Gets the rank of the factory (either Gst::ElementFactory::RANK_MARGINAL,
+    Gst::ElementFactory::RANK_NONE, Gst::ElementFactory::RANK_PRIMARY or
+    Gst::ElementFactory::RANK_SECONDARY).
+    * Returns: the rank of the factory.
+
+--- rank_marginal?
+    This method returns true if the rank of the factory equals Gst::ElementFactory::RANK_MARGINAL, false otherwise.
+    * Returns: true if the rank of the factory equals Gst::ElementFactory::RANK_MARGINAL, false otherwise.
+
+--- rank_none?
+    This method returns true if the rank of the factory equals Gst::ElementFactory::RANK_NONE, false otherwise.
+    * Returns: true if the rank of the factory equals Gst::ElementFactory::RANK_NONE, false otherwise.
+
+--- rank_primary?
+    This method returns true if the rank of the factory equals Gst::ElementFactory::RANK_PRIMARY, false otherwise.
+    * Returns: true if the rank of the factory equals Gst::ElementFactory::RANK_PRIMARY, false otherwise.
+
+--- rank_secondary?
+    This method returns true if the rank of the factory equals Gst::ElementFactory::RANK_SECONDARY, false otherwise.
+    * Returns: true if the rank of the factory equals Gst::ElementFactory::RANK_SECONDARY, false otherwise.
+
+--- to_s
+    This method returns a String representing the factory.
+    * Returns: a String representing the factory.
+
+== Constants
+--- RANK_MARGINAL
+    The element is only marginally usefull for autoplugging.
+
+--- RANK_NONE
+    The plugin may not be used in autoplugging.
+
+--- RANK_PRIMARY
+    The plugin is well suited for autoplugging.
+
+--- RANK_SECONDARY
+    The plugin is suited for autoplugging but only as a second candidate.
+
+== See Also
+((<Gst>)).
+
+- ((<lrz>))

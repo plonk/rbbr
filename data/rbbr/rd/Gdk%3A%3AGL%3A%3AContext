@@ -1,0 +1,48 @@
+= class Gdk::GL::Context
+Rendering Context - OpenGL rendering context object
+
+== Super Class
+* GLib::Object
+
+== Class Methods
+--- Gdk::GL::Context.new(gldrawable, share_list, direct, render_type)
+    Creates a new OpenGL rendering context.
+    * gldrawable: a ((<Gdk::GL::Drawable>))
+    * share_list: the ((<Gdk::GL::Context>)) with which to share display lists and texture objects. nil indicates that no sharing is to take place.
+    * direct: whether rendering is to be done with a direct connection to the graphics system.
+    * render_type: Gdk::GL::RGBA_TYPE or Gdk::GL::COLOR_INDEX_TYPE (currently not used).
+    * Returns: the new ((<Gdk::GL::Context>)).
+
+--- current
+    Returns the current ((<Gdk::GL::Context>)).
+    * Returns: the current ((<Gdk::GL::Context>)) or nil if there is no current context. 
+
+== Instance Methods
+--- gl_drawable
+    Gets the ((<Gdk::GL::Drawable>)) to which the context is bound.
+    * Returns: the ((<Gdk::GL::Drawable>)) or nil if no ((<Gdk::GL::Drawable>)) is bound.
+
+--- gl_config
+    Gets the ((<Gdk::GL::Config>)) with which the context is configured.
+    * Returns: the ((<Gdk::GL::Config>)).
+
+--- share_list
+    Gets the ((<Gdk::GL::Context>)) with which the context shares the display lists and texture objects.
+    * Returns: the ((<Gdk::GL::Context>)).
+
+--- direct?
+    Returns whether the context is a direct rendering context.
+    * Returns: true if the glcontext is a direct rendering contest.
+
+--- render_type
+    Gets the render_type of the context.
+    * Returns: Gdk::GL::RGBA_TYPE or Gdk::GL::COLOR_INDEX_TYPE.
+
+--- destroy
+    Destroys the OpenGL resources associated with the context.
+
+--- copy(src, mask)
+    Copy state from src rendering context to the context.
+    mask contains the bitwise-OR of the same symbolic names that are passed to the GL.PushAttrib() function. You can use GL::ALL_ATTRIB_BITS to copy all the rendering state information.
+    * src: the source ((<Gdk::GL::Context>))
+    * Returns: false if it fails, true otherwise.

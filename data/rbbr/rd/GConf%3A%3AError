@@ -1,0 +1,5 @@
+= class GConf::Error
+This is the super class of all other GConf related error classes.  If you want to rescue from a GConf error but you don't know what, you can bet that it is at least a GConf::Error.
+
+== Super Class
+* StandardError

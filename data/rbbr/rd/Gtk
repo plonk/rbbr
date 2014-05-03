@@ -1,0 +1,348 @@
+= module Gtk
+Gtk module includes methods as Library initialization, main event loop, events, and standard constants.
+
+Before using Ruby/GTK, you need to initialize it; 
+initialization connects to the window system display, 
+and parses some standard command line arguments. 
+The Gtk.init function initializes Ruby/GTK. 
+Like all GUI toolkits, Ruby/GTK uses an event-driven programming model. 
+When the user is doing nothing, Ruby/GTK sits in the main loop and waits for input. 
+If the user performs some action - say, a mouse click - then the main loop "wakes up" and delivers an event to Ruby/GTK. 
+Ruby/GTK forwards the event to one or more widgets. 
+
+When widgets receive an event, they frequently emit one or more signals. 
+Signals notify your program that "something interesting happened" by invoking blocks you've connected to the signal with GLib::Instantiable#signal_connect. 
+Blocks connected to a signal are often termed callbacks. 
+
+When your callbacks are invoked, you would typically take some action - for example, when an Open button is clicked you might display a Gtk::FileSelectionDialog. 
+After a callback finishes, Ruby/GTK will return to the main loop and await more user input. 
+
+== Module Functions
+--- Gtk.init(argv = ARGV)
+    Call this function before using any other GTK+ functions in your GUI applications. It will initialize everything needed to operate the toolkit and parses some standard command line options. 
+    argv are adjusted accordingly so your own code will never see those standard arguments. 
+    
+    Note:
+    This function will throw RuntimeError if it was unable to initialize the GUI for some reason. 
+    * argv: the ARGV value. Any parameters understood by Gtk.init are stripped before return. 
+    * Returns: self
+
+--- Gtk.main
+    Runs the main loop until Gtk.main_quit is called. You can nest calls to Gtk.main. 
+    In that case Gtk.main_quit will make the innermost invocation of the main loop return.
+    * Returns: nil
+
+--- Gtk.main_level
+    Asks for the current nesting level of the main loop. This can be useful when calling Gtk.quit_add(not implemented yet). 
+    * Returns: the nesting level of the current invocation of the main loop.  
+
+--- Gtk.main_quit
+    Makes the innermost invocation of the main loop return when it regains control. 
+    * Returns: nil
+
+--- Gtk.main_iteration
+    Runs a single iteration of the mainloop. If no events are waiting to be processed GTK+ will block until the next event is noticed. If you don't want to block look at Gtk.main_iteration_do(not implemented yet) or check if any events are pending with Gtk.events_pending? first. 
+    * Returns: true if Gtk.main_quit has been called for the innermost mainloop.  
+
+--- Gtk.events_pending?
+    Checks if any events are pending. This can be used to update the GUI and invoke timeouts etc. while doing some time intensive computation. 
+
+      while (Gtk.events_pending?)
+        Gtk.main_iteration
+      end
+
+    * Returns: true if any events are pending, false otherwise.  
+
+--- Gtk.timeout_add(interval){ ... }
+    Sets a block to be called at regular intervals, with the default priority, G_PRIORITY_DEFAULT(not implemented yet). The function is called repeatedly until it returns false, at which point the timeout is automatically destroyed and the function will not be called again. The first call to the function will be at the end of the first interval. 
+    Note that timeout functions may be delayed, due to the processing of other event sources. Thus they should not be relied on for precise timing. After each call to the timeout function, the time of the next timeout is recalculated based on the current time and the given interval (it does not try to 'catch up' time lost in delays).
+    * interval: the time between calls to the function, in milliseconds (1/1000ths of a second)  
+    * { ... }: block to call  
+    * Returns: the timout_handler_id of event source.  
+
+--- Gtk.timeout_remove(timeout_handler_id)
+    Removes the given timeout destroying all information about it. 
+    * timeout_handler_id: The identifier returned when installing the timeout. 
+    * Returns: nil
+
+--- Gtk.idle_add { ... }
+    Causes tahe mainloop to call the given block whenever no events with higher priority are to be processed. The default priority is GTK_PRIORITY_DEFAULT(not implemented yet), which is rather low. 
+    * { ... }: The block to call.  
+    * Returns: a unique handle for this registration.  
+
+--- Gtk.idle_remove(idle_handler_id)
+    Removes the idle function with the given id. 
+    * idle_handler_id: Identifies the idle function to remove.  
+    * Returns: nil
+
+--- Gtk.current_event
+    Obtains a copy of the event currently being processed by GTK+. For example, if you get a "clicked" signal from Gtk::Button, the current event will be the Gdk::EventButton that triggered the "clicked" signal. If there is no current event, the function returns nil.
+    * Returns: a copy of the current event, or nil if no current event.  
+
+--- Gtk.grab_add
+    Makes widget the current grabbed widget. This means that interaction with other widgets in the same application is blocked and mouse as well as keyboard events are delivered to this widget. 
+    * widget: The widget that grabs keyboard and pointer events.  
+    * Returns: nil
+
+--- Gtk.grab_remove
+    Removes the grab from the given widget. You have to pair calls to Gtk.grab_add and Gtk.grab_remove. 
+    * widget : The widget which gives up the grab.  
+    * Returns: nil
+
+== Constants
+=== GtkAccelFlags
+--- ACCEL_VISIBLE
+    = 1 << 0
+--- ACCEL_LOCKED
+    = 1 << 1
+--- ACCEL_MASK
+    = 0x07
+
+=== GtkAnchorType
+--- ANCHOR_CENTER
+--- ANCHOR_NORTH
+--- ANCHOR_NORTH_WEST
+--- ANCHOR_NORTH_EAST
+--- ANCHOR_SOUTH
+--- ANCHOR_SOUTH_WEST
+--- ANCHOR_SOUTH_EAST
+--- ANCHOR_WEST
+--- ANCHOR_EAST
+--- ANCHOR_N
+        = ANCHOR_NORTH
+--- ANCHOR_NW
+        = ANCHOR_NORTH_WEST
+--- ANCHOR_NE
+        = ANCHOR_NORTH_EAST
+--- ANCHOR_S
+        = ANCHOR_SOUTH
+--- ANCHOR_SW
+        = ANCHOR_SOUTH_WEST
+--- ANCHOR_SE
+        = ANCHOR_SOUTH_EAST
+--- ANCHOR_W
+        = ANCHOR_WEST
+--- ANCHOR_E
+        = ANCHOR_EAST
+
+=== GtkAttachOptions
+Denotes the expansion properties that a widget will have when it (or it's parent) is resized. 
+--- EXPAND
+    = 1 << 0. The widget should expand to take up any extra space in its container that has been allocated.  
+--- SHRINK
+    = 1 << 1. The widget should shrink as and when possible.  
+--- FILL
+    = 1 << 2. The widget should fill the space allocated to it. 
+
+=== GtkCornerType
+Specifies which corner a child widget should be placed in when packed into a Gtk::ScrolledWindow. This is effectively the opposite of where the scroll bars are placed. 
+--- CORNER_TOP_LEFT
+       Place the scrollbars on the right and bottom of the widget (default behaviour).
+--- CORNER_BOTTOM_LEFT
+       Place the scrollbars on the top and right of the widget. 
+--- CORNER_TOP_RIGHT
+       Place the scrollbars on the left and bottom of the widget.
+--- CORNER_BOTTOM_RIGHT
+       Place the scrollbars on the top and left of the widget.
+
+=== GtkDeleteType
+--- DELETE_CHARS
+--- DELETE_WORD_ENDS
+       delete only the portion of the word to the left/right of cursor if we're in the middle of a word.
+--- DELETE_WORDS
+--- DELETE_DISPLAY_LINES
+--- DELETE_DISPLAY_LINE_ENDS
+--- DELETE_PARAGRAPH_ENDS
+       like C-k in Emacs (or its reverse)
+--- DELETE_PARAGRAPHS
+       C-k in pico, kill whole line
+--- DELETE_WHITESPACE
+        M-\ in Emacs
+
+=== GtkDirectionType
+--- DIR_TAB_FORWARD
+--- DIR_TAB_BACKWARD
+--- DIR_UP
+--- DIR_DOWN
+--- DIR_LEFT
+--- DIR_RIGHT
+
+=== GtkExpanderStyle
+--- EXPANDER_COLLAPSED
+--- EXPANDER_SEMI_COLLAPSED
+--- EXPANDER_SEMI_EXPANDED
+--- EXPANDER_EXPANDED
+
+=== GtkIMPreeditStyle
+--- IM_PREEDIT_NOTHING
+--- IM_PREEDIT_CALLBACK
+
+=== GtkIMStatusStyle
+--- IM_STATUS_NOTHING
+--- IM_STATUS_CALLBACK
+
+=== GtkJustification
+Used for justifying the text inside a Gtk::Label widget. (See also Gtk::Alignment). 
+--- JUSTIFY_LEFT
+       The text is placed at the left edge of the label.
+--- JUSTIFY_RIGHT
+       The text is placed at the right edge of the label. 
+--- JUSTIFY_CENTER
+       The text is placed in the center of the label. 
+--- JUSTIFY_FILL
+       The text is placed is distributed across the label.
+
+=== GtkMetricType
+--- PIXELS
+--- INCHES
+--- CENTIMETERS
+
+=== GtkMovementStep
+--- MOVEMENT_LOGICAL_POSITIONS 
+       move by forw/back graphemes 
+--- MOVEMENT_VISUAL_POSITIONS  
+       move by left/right graphemes 
+--- MOVEMENT_WORDS                
+       move by forward/back words 
+--- MOVEMENT_DISPLAY_LINES      
+       move up/down lines (wrapped lines) 
+--- MOVEMENT_DISPLAY_LINE_ENDS 
+       move up/down lines (wrapped lines) 
+--- MOVEMENT_PARAGRAPHS          
+       move up/down paragraphs (newline-ended lines) 
+--- MOVEMENT_PARAGRAPH_ENDS     
+       move to either end of a paragraph 
+--- MOVEMENT_PAGES
+       move by pages 
+--- MOVEMENT_BUFFER_ENDS        
+       move to ends of the buffer 
+--- MOVEMENT_HORIZONTAL_PAGES   
+       move horizontally by pages 
+
+=== GtkOrientation
+--- ORIENTATION_HORIZONTAL
+--- ORIENTATION_VERTICAL
+
+=== GtkPackType
+Represents the packing location Gtk::Box children. (See: Gtk::VBox, Gtk::HBox, and Gtk::ButtonBox). 
+--- PACK_START
+       The child is packed into the start of the box
+--- PACK_END
+       The child is packed into the end of the box  
+
+=== GtkPathPriorityType
+--- PATH_PRIO_LOWEST
+    = 0
+--- PATH_PRIO_GTK
+    = 4
+--- PATH_PRIO_APPLICATION
+    = 8
+--- PATH_PRIO_THEME
+    = 10
+--- PATH_PRIO_RC
+    = 12
+--- PATH_PRIO_HIGHEST
+    = 15
+
+=== GtkPathType
+--- PATH_WIDGET
+--- PATH_WIDGET_CLASS
+--- PATH_CLASS
+
+=== GtkPolicyType
+Determines when a scroll bar will be visible. 
+--- POLICY_ALWAYS
+       The scrollbar is always visible.
+--- POLICY_AUTOMATIC
+       The scrollbar will appear and disappear as necessary. 
+--- POLICY_NEVER
+       The scrollbar will never appear. 
+
+=== GtkPositionType
+--- POS_LEFT
+--- POS_RIGHT
+--- POS_TOP
+--- POS_BOTTOM
+
+=== GtkReliefStyle
+--- RELIEF_NORMAL
+--- RELIEF_HALF
+--- RELIEF_NONE
+
+=== GtkResizeMode
+--- RESIZE_PARENT		
+       Pass resize request to the parent 
+--- RESIZE_QUEUE		
+       Queue resizes on this widget 
+--- RESIZE_IMMEDIATE		
+       Perform the resizes now 
+
+=== GtkScrollType
+--- SCROLL_NONE
+--- SCROLL_JUMP
+--- SCROLL_STEP_BACKWARD
+--- SCROLL_STEP_FORWARD
+--- SCROLL_PAGE_BACKWARD
+--- SCROLL_PAGE_FORWARD
+--- SCROLL_STEP_UP
+--- SCROLL_STEP_DOWN
+--- SCROLL_PAGE_UP
+--- SCROLL_PAGE_DOWN
+--- SCROLL_STEP_LEFT
+--- SCROLL_STEP_RIGHT
+--- SCROLL_PAGE_LEFT
+--- SCROLL_PAGE_RIGHT
+--- SCROLL_START
+--- SCROLL_END
+
+=== GtkSelectionMode
+--- SELECTION_NONE
+       Nothing can be selected
+--- SELECTION_SINGLE
+--- SELECTION_BROWSE
+--- SELECTION_MULTIPLE
+
+=== GtkShadowType
+Used to change the appearance of an outline typically provided by a GtkFrame. 
+--- SHADOW_NONE
+       No outline.
+--- SHADOW_IN
+       The outline is bevelled inwards.
+--- SHADOW_OUT
+       The outline is bevelled outwards like a button. 
+--- SHADOW_ETCHED_IN
+       The outline itself is an inward bevel, but the frame does
+--- SHADOW_ETCHED_OUT
+
+
+=== GtkStateType
+This type indicates the current state of a widget; the state determines how the widget is drawn. The GtkStateType is also used to identify different colors in a Gtk::Style for drawing, so states can be used for subparts of a widget as well as entire widgets. 
+--- STATE_NORMAL
+       State during normal operation.
+--- STATE_ACTIVE
+       State of a currently active widget, such as a depressed button. 
+--- STATE_PRELIGHT
+       State indicating that the mouse pointer is over the widget and the widget will respond to mouse clicks. 
+--- STATE_SELECTED
+       State of a selected item, such the selected row in a list. 
+--- STATE_INSENSITIVE
+       State indicating that the widget is unresponsive to user actions.  
+
+=== GtkUpdateType
+--- UPDATE_CONTINUOUS
+--- UPDATE_DISCONTINUOUS
+--- UPDATE_DELAYED
+
+=== GtkVisibility
+--- VISIBILITY_NONE
+--- VISIBILITY_PARTIAL
+--- VISIBILITY_FULL
+
+=== GtkSortType
+Determines the direction of a sort. 
+--- SORT_ASCENDING
+       Sorting is in ascending order. 
+--- SORT_DESCENDING
+       Sorting is in descending order.
+
+- ((<Masao>))

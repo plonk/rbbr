@@ -1,0 +1,270 @@
+= class Gst::Element
+Base class for all pipeline elements.
+
+== Object Hierarchy
+* Object
+  * GLib::Instantiatable
+    * GLib::Object
+      * Gst::Object
+        * Gst::Element
+
+== Instance Methods
+--- >>(element)
+    Synonym for Gst::Element#link.
+    * element: a Gst::Element object.  
+    * Returns: the destination element, or nil if the link failed.
+
+--- add_ghost_pad(pad, pad_name=nil)
+    Creates a ghost pad from the given pad, and adds it to the list of
+    pads of the element.
+    The second parameter defines the ghost pad name.  
+    When ommited (or nil), the ghost pad will receive the same name as
+    the given pad.
+    * pad_name: a name which will be attributed to the ghost pad.  
+    * pad: a Gst::Pad. 
+    * Returns: the ghost pad which was created, or nil.
+
+--- clock
+    This method returns the clock of the element (as a Gst::Clock object), or nil if this element does not provide a clock.
+    * Returns: the clock of the element (as a Gst::Clock object), or nil if this element does not provide a clock.
+
+--- complex?
+    Checks if the Gst::Element::COMPLEX flag is set on the object.
+    * Returns: true if the flag is set, false otherwise.
+
+--- decoupled?
+    Checks if the Gst::Element::DECOUPLED flag is set on the object.
+    * Returns: true if the flag is set, false otherwise.
+
+--- each_pad { |pad| ... }
+    Calls the block for each pad associated with the element, passing a 
+    reference to the Gst::Pad as parameter.
+    * Returns: always nil.
+
+--- each_property { |name, descr, obj| ... }
+    Calls the block for each property of the element, passing
+    name, description and value of the property as parameters.
+    * Returns: always nil.
+
+--- eos
+    Performs the actions needed to bring the element in the EOS 
+    (end of stream) state.
+    * Returns: self.
+
+--- event_aware?
+    Checks if the Gst::Element::EVENT_AWARE flag is set on the object.
+    * Returns: true if the flag is set, false otherwise.
+
+--- get_pad(name)
+    Retrieves a Gst::Pad object from the element by name.
+    * name: the name of a pad.  
+    * Returns: a Gst::Pad object, or nil if the pad cannot be found.
+
+--- get_property(name)
+    Returns the value associated with the named property,
+    or nil if the property has no value.
+    Note that properties may be read through accessors methods, 
+    which are generated on-the-fly according to the Gst::Element type.
+    	e = Gst::ElementFactory.make("filesrc")
+    	# ...
+    	
+    	puts "Location is " + e.get_property("location")
+    	# This does exactly the same
+    	puts "Location is " + e.location
+    * name: a property name.  
+    * Returns: the object associated with the named property.
+
+--- has_infinite_loop?
+    Checks if the Gst::Element::INFINITE_LOOP flag is set on the object.
+    * Returns: true if the flag is set, false otherwise.
+
+--- has_new_loopfunc?
+    Checks if the Gst::Element::NEW_LOOPFUNC flag is set on the object.
+    * Returns: true if the flag is set, false otherwise.
+
+--- indexable?
+    This method returns true if the element can be indexed, false otherwise.
+    * Returns: true if the element can be indexed, false otherwise.
+
+--- link(element)
+    Links this element (source) to the provided element (destination). 
+    The method looks for existing pads and request pads that 
+    aren't linked yet. If multiple links are possible, only one 
+    is established.
+    * element: a Gst::Element object.  
+    * Returns: the destination element, or nil if the link failed.
+
+--- link_pads(element)
+    Links the "src" named pad of the current element to the
+    "sink" named pad of the destination element, returning
+    true on success.
+    If you want to link specific named pads, you should use
+    the Gst::Pad#link method directly:
+    	element1.link_pads(element2)
+    	
+    	# This does the same
+    	element1.get_pad("src").link(element2.get_pad("sink"))
+    * element: a Gst::Element.  
+    * Returns: true on success, false on failure.
+
+--- pads
+    Gets a list of the pads associated with the element, in an array
+    of Gst::Pad objects.
+    * Returns: an Array of Gst::Pad objects.
+
+--- pause
+    This method calls Gst::Element#set_state with Gst::Element::STATE_PAUSED.
+    * Returns: a code (see ((<GstElementState|Gst::Element#GstElementState>))Return).
+
+--- paused?
+    This method returns true if the current state equals Gst::Element::STATE_PAUSED, false otherwise.
+    * Returns: true if the current state equals Gst::Element::STATE_PAUSED, false otherwise.
+
+--- play
+    This method calls Gst::Element#set_state with Gst::Element::STATE_PLAYING.
+    * Returns: a code (see ((<GstElementState|Gst::Element#GstElementState>))Return).
+
+--- playing?
+    This method returns true if the current state equals Gst::Element::STATE_PLAYING, false otherwise.
+    * Returns: true if the current state equals Gst::Element::STATE_PLAYING, false otherwise.
+
+--- provides_clock?
+    This method returns true if the element provides a clock, false otherwise.
+    * Returns: true if the element provides a clock, false otherwise.
+
+--- query(query_type, format=Gst::Format::DEFAULT)
+    Performs a query on the element.
+    * format: a format (see ((<GstFormat|Gst::Format#GstFormat>))s).  
+    * query_type: a query type (see ((<GstQueryType|Gst::QueryType#GstQueryType>))s). 
+    * Returns: a Fixnum value returned by the query, or nil if the query could not be performed.
+
+--- ready
+    This method calls Gst::Element#set_state with Gst::Element::STATE_READY.
+    * Returns: a code (see ((<GstElementState|Gst::Element#GstElementState>))Return).
+
+--- ready?
+    This method returns true if the current state equals Gst::Element::STATE_READY, false otherwise.
+    * Returns: true if the current state equals Gst::Element::STATE_READY, false otherwise.
+
+--- requires_clock?
+    This method returns true if the element requires a clock, false otherwise.
+    * Returns: true if the element requires a clock, false otherwise.
+
+--- sched_interrupt
+    Requests the scheduler of this element to interrupt the 
+    execution of this element and scheduler another one.
+    * Returns: self.
+
+--- sched_yield
+    Requests a yield operation for the element. The scheduler 
+    will typically give control to another element.
+    * Returns: self.
+
+--- send_event(event)
+    Sends an event to an element, through a Gst::Event object. 
+    If the element doesn't implement an event handler, the event will be 
+    forwarded to a random sink pad.
+    * event: a Gst::Event object.  
+    * Returns: true if the request event was successfully handled, false otherwise.
+
+--- set_property(name, obj)
+    Sets the value anObject for a named property.
+    If the element uses threadsafe properties, the property will 
+    be put on the async queue.
+    Note that properties may be set through accessors methods, 
+    which are generated on-the-fly according to the Gst::Element type.
+    	e = Gst::ElementFactory.make("filesrc")
+    	e.set_property("location", "a_file.ogg")
+    	
+    	# This does exactly the same
+    	e.location = "a_file.ogg"
+    * name: a property name. 
+    * obj: an object.  
+    * Returns: self.
+
+--- set_state(state)
+    Sets the state of the element. 
+    This method will try to set the requested state by going through all 
+    the intermediary states and calling the class's state change function 
+    for each.
+    * state: the state you want to set (see ((<GstElementState|Gst::Element#GstElementState>))).  
+    * Returns: a code (see ((<GstElementState|Gst::Element#GstElementState>))Return).
+
+--- state
+    This method returns the state of the element (see ((<GstElementState|Gst::Element#GstElementState>))).
+    * Returns: the state of the element (see ((<GstElementState|Gst::Element#GstElementState>))).
+
+--- state=(state)
+    Synonym for Gst::Element#set_state.
+    * state: the state you want to set (see ((<GstElementState|Gst::Element#GstElementState>))).  
+    * Returns: a code (see ((<GstElementState|Gst::Element#GstElementState>))Return).
+
+--- stop
+    This method calls Gst::Element#set_state with Gst::Element::STATE_NULL.
+    * Returns: a code (see ((<GstElementState|Gst::Element#GstElementState>))Return).
+
+--- stopped?
+    This method returns true if the current state is set to Gst::Element::STATE_NULL, false otherwise.
+    * Returns: true if the current state is set to Gst::Element::STATE_NULL, false otherwise.
+
+--- thread_suggested?
+    Checks if the Gst::Element::THREAD_SUGGESTED flag is set on the 
+    object.
+    * Returns: true if the flag is set, false otherwise.
+
+--- unlink_pads(element)
+    Unlinks the "src" named pad of the current element from the
+    "sink" named pad of the destination element.
+    If you want to unlink specific named pads, you should use
+    the Gst::Pad#unlink method directly:
+    	element1.unlink_pads(element2)
+    	
+    	# This does the same
+    	element1.get_pad("src").unlink(element2.get_pad("sink"))
+    * element: a Gst::Element.  
+    * Returns: self.
+
+--- use_threadsafe_properties? 
+    Checks if the Gst::Element::USE_THREADSAFE_PROPERTIES flag 
+    is set on the object.
+    * Returns: true if the flag is set, false otherwise.
+
+--- wait_state_change
+    Waits and blocks until the element changed its state.
+    * Returns: self.
+
+== Constants
+=== GstElementState
+--- STATE_NULL
+--- STATE_PAUSED
+--- STATE_PLAYING
+--- STATE_READY
+--- STATE_VOID_PENDING
+
+=== GstElementFlags
+--- COMPLEX
+--- DECOUPLED
+--- EVENT_AWARE
+--- FLAG_LAST
+--- INFINITE_LOOP
+--- NEW_LOOPFUNC
+--- SCHEDULER_PRIVATE1
+--- SCHEDULER_PRIVATE2
+--- THREAD_SUGGESTED
+--- USE_THREADSAFE_PROPERTIES
+
+== Signals
+--- eos
+
+--- error
+
+--- new-pad
+
+--- pad-removed
+
+--- state-change
+
+== See Also
+((<Gst::Bin>)), ((<Gst>)).
+
+- ((<lrz>))
