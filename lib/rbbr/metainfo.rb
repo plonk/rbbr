@@ -120,7 +120,7 @@ module RBBR
     
     def self.update_modules
       ObjectSpace.each_object(Module) do |m|
-	@modules << m.name unless m.name.empty?
+	@modules << m.name unless m.name.nil? or m.name.empty?
       end
       @link_regexp = nil
     end
