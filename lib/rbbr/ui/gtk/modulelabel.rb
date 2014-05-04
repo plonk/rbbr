@@ -45,11 +45,12 @@ module GTK
       else # Module
 	@buffer.insert(iter, "module ", 'title', 'large')
       end
-      @buffer.insert(iter, modul.name, 'link', 'large')
+      @buffer.insert(iter, modul.name.to_s, 'link', 'large')
 
       if Class === modul and Object != modul
+        module_name =  modul.superclass.nil? ? '' : modul.superclass.name.to_s
 	@buffer.insert(iter, " < ", 'title', 'large')
-	@buffer.insert(iter, modul.superclass.name, 'link', 'large')
+	@buffer.insert(iter, module_name, 'link', 'large')
       end
 
       included_modules_at = modul.included_modules_at
@@ -62,8 +63,7 @@ module GTK
 	  else
 	    @buffer.insert(iter, ", ", 'title', 'large')
 	  end
-          module_name = mod.name.nil? || mod.name.empty? ? mod.to_s : mod.name
-	  @buffer.insert(iter, module_name, 'link', 'large')
+	  @buffer.insert(iter, mod.name.to_s, 'link', 'large')
 	end
       end
     end
