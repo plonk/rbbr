@@ -1,5 +1,5 @@
 = class Gdk::GLConfig
-Frame Buffer Configuration — OpenGL frame buffer configuration object
+Frame Buffer Configuration - OpenGL frame buffer configuration object
 
 == Object Hierarchy
 * Object

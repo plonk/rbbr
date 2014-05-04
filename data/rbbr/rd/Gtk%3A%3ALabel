@@ -38,7 +38,7 @@ The markup passed to Gtk::Label#set_markup() must be valid; for example, literal
 Markup strings are just a convenient way to set the Pango::AttrList on a label; Gtk::Label#set_attributes() may be a simpler way to set attributes in some cases. Be careful though; Pango::AttrList tends to cause internationalization problems, unless you're applying attributes to the entire string. The reason is that specifying the start_index and end_index for a Pango::Attribute requires knowledge of the exact string being displayed, so translations will cause problems.
 
 === Selectable labels
-Labels can be made selectable with Gtk::Label#selectable=. Selectable labels allow the user to copy the label contents to the clipboard. Only labels that contain useful-to-copy information — such as error messages — should be made selectable.
+Labels can be made selectable with Gtk::Label#selectable=. Selectable labels allow the user to copy the label contents to the clipboard. Only labels that contain useful-to-copy information - such as error messages - should be made selectable.
 
 === Text layout
 A label can contain any number of paragraphs, but will have performance problems if it contains more than a small number. Paragraphs are separated by newlines or other paragraph separators understood by Pango.

@@ -1,5 +1,5 @@
 = class Gdk::GLPixmap
-OpenGL Pixmap — OpenGL pixmap which is maintained off-screen
+OpenGL Pixmap - OpenGL pixmap which is maintained off-screen
 
 == Object Hierarchy
 * Object
