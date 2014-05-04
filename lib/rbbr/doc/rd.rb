@@ -28,7 +28,7 @@ module RBBR
       def lookup_class( klass )
         data = @db[klass]
         ret = "" 
-       if data
+        if data
           data.each do |line|
             if /^= / =~ line
             elsif /^== / =~ line
