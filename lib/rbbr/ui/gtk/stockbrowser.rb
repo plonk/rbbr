@@ -177,7 +177,7 @@ module GTK
 	destroy
       end
       hbox.pack_end(button)
-      vbox.pack_start(hbox)
+      vbox.pack_start(hbox, false)
       add(vbox)
       signal_connect("delete-event") do
 	save_conf
