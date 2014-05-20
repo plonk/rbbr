@@ -224,6 +224,11 @@ module GTK
       end
 
       # Add Keyboard accelerations.
+      ag = create_accel_group
+      add_accel_group(ag)
+    end
+
+    def create_accel_group
       ag = Gtk::AccelGroup.new
       ag.connect(Gdk::Keyval::GDK_Left, Gdk::Window::CONTROL_MASK,
 		 Gtk::ACCEL_VISIBLE) do
@@ -249,7 +254,7 @@ module GTK
 	  @module_display.module_label.grab_focus
 	end
       end
-      add_accel_group(ag)
+      ag
     end
 
     def save_conf
