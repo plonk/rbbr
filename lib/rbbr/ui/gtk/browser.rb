@@ -24,6 +24,22 @@ module GTK
     GetText.bindtextdomain("rbbr", nil, nil, "UTF-8")
 
     def create_menubar
+      menu_accelgroup = Gtk::AccelGroup.new
+      add_accel_group(menu_accelgroup)
+      ifp = create_item_factory(menu_accelgroup)
+
+      @back_menu = ifp.get_widget(_("/_View/Go _Back").gsub(/_/, ""))
+      @forward_menu = ifp.get_widget(_("/_View/Go _Forward").gsub(/_/, ""))
+      @back_menu.sensitive = false
+      @forward_menu.sensitive = false
+
+      @expand_menu = ifp.get_widget(_("/_View/_Expand All").gsub(/_/, ""))
+      @collapse_menu = ifp.get_widget(_("/_View/_Collapse All").gsub(/_/, ""))
+
+      ifp.get_widget("<main>")
+    end
+
+    def create_item_factory accelgroup
       cal_req = Proc.new{
         LibrarySelectionDialog.new(self, @conf, [@modulelist, @moduletree])
       }
@@ -65,39 +81,27 @@ module GTK
         aboutdialog.destroy
       }
 
-      accelgroup = Gtk::AccelGroup.new
-      add_accel_group(accelgroup)
       ifp = Gtk::ItemFactory.new(Gtk::ItemFactory::TYPE_MENU_BAR, "<main>", accelgroup)
 
       ifp.create_items([
-                         [_("/_File")],
-                         [_("/_File/_Require Library..."), "<StockItem>", "<control>L", Gtk::Stock::ADD, cal_req],
-                         [_("/_File/_Load Script..."), "<StockItem>", "<control>O", Gtk::Stock::OPEN, cal_load],
-                         [_("/_File/_Separator"), "<Separator>"],
-                         [_("/_File/_Quit"), "<StockItem>", "<control>Q", Gtk::Stock::QUIT, cal_quit],
-                         [_("/_View")],
-                         [_("/_View/_Expand All"), "<StockItem>", "<control>E", Gtk::Stock::GOTO_BOTTOM, cal_expand],
-                         [_("/_View/_Collapse All"), "<StockItem>", "<control>C", Gtk::Stock::GOTO_TOP, cal_fold],
-                         [_("/_View/_Separator1"), "<Separator>"],
-                         [_("/_View/Go _Back"), "<StockItem>", "<control>B", Gtk::Stock::GO_BACK, cal_goback],
-                         [_("/_View/Go _Forward"), "<StockItem>", "<control>F", Gtk::Stock::GO_FORWARD, cal_gonext],
-                         [_("/_View/_Separator2"), "<Separator>"],
-                         [_("/_View/_Refresh"), "<StockItem>", "<control>R", Gtk::Stock::REFRESH, cal_update],
-                         [_("/_View/_Separator"), "<Separator>"],
-                         [_("/_View/_Stock Item and Icon Browser..."), "<Item>", "<control>I", "", cal_stockbrowser],
-                         [_("/_Help")],
-                         [_("/_Help/_About"), "<StockItem>", "", "", cal_about]
+                        [_("/_File")],
+                        [_("/_File/_Require Library..."), "<StockItem>", "<control>L", Gtk::Stock::ADD, cal_req],
+                        [_("/_File/_Load Script..."), "<StockItem>", "<control>O", Gtk::Stock::OPEN, cal_load],
+                        [_("/_File/_Separator"), "<Separator>"],
+                        [_("/_File/_Quit"), "<StockItem>", "<control>Q", Gtk::Stock::QUIT, cal_quit],
+                        [_("/_View")],
+                        [_("/_View/_Expand All"), "<StockItem>", "<control>E", Gtk::Stock::GOTO_BOTTOM, cal_expand],
+                        [_("/_View/_Collapse All"), "<StockItem>", "<control>C", Gtk::Stock::GOTO_TOP, cal_fold],
+                        [_("/_View/_Separator1"), "<Separator>"],
+                        [_("/_View/Go _Back"), "<StockItem>", "<control>B", Gtk::Stock::GO_BACK, cal_goback],
+                        [_("/_View/Go _Forward"), "<StockItem>", "<control>F", Gtk::Stock::GO_FORWARD, cal_gonext],
+                        [_("/_View/_Separator2"), "<Separator>"],
+                        [_("/_View/_Refresh"), "<StockItem>", "<control>R", Gtk::Stock::REFRESH, cal_update],
+                        [_("/_View/_Separator"), "<Separator>"],
+                        [_("/_View/_Stock Item and Icon Browser..."), "<Item>", "<control>I", "", cal_stockbrowser],
+                        [_("/_Help")],
+                        [_("/_Help/_About"), "<StockItem>", "", "", cal_about]
                        ])
-
-      @back_menu = ifp.get_widget(_("/_View/Go _Back").gsub(/_/, ""))
-      @forward_menu = ifp.get_widget(_("/_View/Go _Forward").gsub(/_/, ""))
-      @back_menu.sensitive = false
-      @forward_menu.sensitive = false
-
-      @expand_menu = ifp.get_widget(_("/_View/_Expand All").gsub(/_/, ""))
-      @collapse_menu = ifp.get_widget(_("/_View/_Collapse All").gsub(/_/, ""))
-
-      ifp.get_widget("<main>")
     end
 
     def create_toolbar
