@@ -1,6 +1,6 @@
 =begin
 
-  rbbr/ui/gtk/undo.rb 
+  rbbr/ui/gtk/undo.rb
 
   $Author: mutoh $
   $Date: 2004/03/28 14:23:35 $
@@ -57,7 +57,7 @@ module GTK
     # for Overridden
     #
 
-    # Return false if undo was fault and undo next. 
+    # Return false if undo was fault and undo next.
     def undo(data)
       $stderr.puts "#{self.class}#undo is not implemented yet"
       true
@@ -90,7 +90,7 @@ module GTK
     signal_new("changed", GLib::Signal::ACTION,
                nil,
                GLib::Type["void"],
-               GLib::Type["VALUE"], GLib::Type["VALUE"])    
+               GLib::Type["VALUE"], GLib::Type["VALUE"])
 
     def initialize
       super()
@@ -100,7 +100,7 @@ module GTK
     def update(data = nil)
       signal_emit("changed", undoable?, redoable?)
     end
-    
+
     def undo
       while ret = pop_undo_data
 	ret[0].set_undo(true)
