@@ -1,6 +1,6 @@
 =begin
 
-  rbbr/ui/gtk/stockview.rb 
+  rbbr/ui/gtk/stockview.rb
 
   $Author: mutoh $
   $Date: 2004/03/25 14:47:28 $
@@ -13,8 +13,8 @@
 
 =end
 
-if __FILE__ == $0 
-  # If you use this file directly, you need to 
+if __FILE__ == $0
+  # If you use this file directly, you need to
   #install Ruby-GetText-Package.
   require 'gettext'
 end
@@ -72,7 +72,7 @@ module GTK
       @column.title = _("Constants")
       @column.pack_start(@pix, true)
       @column.set_cell_data_func(@pix) do |column, cell, model, iter|
-        cell.pixbuf = iter[0] 
+        cell.pixbuf = iter[0]
       end
       @column.pack_start(@text, true)
       @column.set_cell_data_func(@text) do |column, cell, model, iter|
@@ -80,7 +80,7 @@ module GTK
       end
       @column.sort_column_id = 1
       append_column(@column)
-      
+
       # other columns
       renderer = Gtk::CellRendererText.new
       labels = [_("Label"), _("Accel"), _("ID")]
@@ -99,12 +99,11 @@ module GTK
       set_rules_hint(true)
       append_list
     end
-      
+
     def append_list
       freeze_notify
       stocks = [Gtk::Stock]
-      stocks << Gnome::Stock if $GNOME_SUPPORTED
-    
+
       stocks.each do |mod_stock|
         mod_stock.constants.sort.each do |name|
           stock = mod_stock.module_eval(name.to_s)
@@ -118,8 +117,8 @@ module GTK
             accel = "" unless accel
           rescue ArgumentError
           end
-          append([render_icon(stock, Gtk::IconSize::MENU, value), 
-                   mod_stock.name.to_s + "::" + name.to_s, 
+          append([render_icon(stock, Gtk::IconSize::MENU, value),
+                   mod_stock.name.to_s + "::" + name.to_s,
                    value, accel, ":" + mod_stock.const_get(name).to_s
                  ])
         end
@@ -156,11 +155,11 @@ module GTK
       stockview = StockView.new
       stockview.add_observer(stockcont)
 
-      # automatically select the first stock item 
+      # automatically select the first stock item
       if iter = stockview.model.iter_first
         stockview.selection.select_iter(iter)
       end
-      
+
       scroll = Gtk::ScrolledWindow.new
       scroll.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC)
       scroll.set_border_width(6)
@@ -192,10 +191,10 @@ module GTK
       @conf["stockbrowser.y"] = y < 0 ? 2 : y
     end
   end
-     
+
 end;end;end
 
-if __FILE__ == $0 
+if __FILE__ == $0
   Gtk.init
   stockdialog = RBBR::UI::GTK::StockWindow.new(Hash.new)
 GC.start

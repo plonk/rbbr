@@ -49,11 +49,6 @@ module RBBR
 module UI
 module GTK
   def self.main
-    if $GNOME_SUPPORTED
-      Gnome::Program.new("rbbr", RBBR::VERSION) 
-    else
-      Gtk.init
-    end
     window = Browser.new
     window.show_all
     GLib::Log.set_handler("Gtk", 1|2|4|8) do |domain, level, message|
