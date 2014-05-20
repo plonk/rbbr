@@ -1,6 +1,6 @@
 =begin
 
-  rbbr/ui/gtk/modulelistview.rb 
+  rbbr/ui/gtk/modulelistview.rb
 
   $Author: mutoh $
   $Date: 2004/01/10 18:30:16 $
@@ -20,20 +20,20 @@ module GTK
   class ModuleListView < ModuleView
     include GetText
     GetText.bindtextdomain("rbbr", nil, nil, "UTF-8")
-    
+
     def initialize(search_entry)
       @model = Gtk::ListStore.new(String, Module)
-      @column = Gtk::TreeViewColumn.new(_("Classes / Modules"), 
+      @column = Gtk::TreeViewColumn.new(_("Classes / Modules"),
                                         Gtk::CellRendererText.new, :text => 0)
       @old_target = nil
       super(search_entry, @model, @column)
     end
-    
+
     def search_impl(module_name, method_name)
       if @old_target != module_name
 	build_tree(module_name)
 	if iter = @model.iter_first
-	  selection.select_iter(iter) 
+	  selection.select_iter(iter)
 	end
 	@old_target = module_name
 	ret = false
@@ -50,17 +50,17 @@ module GTK
 	      row_activated(path, @column)
 	      set_cursor(path, @column, false)
 	      return false
-	    end 
+	    end
 	  end while(iter.next!)
 	end
       end
       ret
     end
-    
+
     def build_tree(target_name = nil)
       @model.clear
       freeze_notify
-      
+
       subclasses = []
       @dag.each do |parent, klass, _|
         if /#{target_name}/i =~ klass.inspect and /^(RBBR|ReFe|RI|\#\<)(::)?/ !~ klass.inspect

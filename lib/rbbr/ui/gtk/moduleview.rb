@@ -1,6 +1,6 @@
 =begin
 
-  rbbr/ui/gtk/moduleview.rb 
+  rbbr/ui/gtk/moduleview.rb
 
   $Author: mutoh $
   $Date: 2004/01/12 01:28:17 $
@@ -31,7 +31,7 @@ module GTK
 
     include GetText
     GetText.bindtextdomain("rbbr", nil, nil, "UTF-8")
-    
+
     def initialize(search_entry, model, column)
       @search_entry = search_entry
       @model = model
@@ -106,7 +106,7 @@ module GTK
 	end
       end
     end
-    
+
     def build_tree
       p "not implemented."
     end
