@@ -55,7 +55,7 @@ module GTK
       # ignore log message
     end
 
-	GC.start
+    GC.start
     Gtk.main
   end
 

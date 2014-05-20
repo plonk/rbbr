@@ -1,6 +1,6 @@
 =begin
 
-  rbbr/ui/gtk/browser.rb 
+  rbbr/ui/gtk/browser.rb
 
   $Author: mutoh $
   $Date: 2004/03/25 14:57:35 $
@@ -24,7 +24,7 @@ module GTK
     GetText.bindtextdomain("rbbr", nil, nil, "UTF-8")
 
     def create_menubar
-      cal_req = Proc.new{ 
+      cal_req = Proc.new{
         LibrarySelectionDialog.new(self, @conf, [@modulelist, @moduletree])
       }
 
@@ -88,7 +88,7 @@ module GTK
                          [_("/_Help")],
                          [_("/_Help/_About"), "<StockItem>", "", "", cal_about]
                        ])
-   
+
       @back_menu = ifp.get_widget(_("/_View/Go _Back").gsub(/_/, ""))
       @forward_menu = ifp.get_widget(_("/_View/Go _Forward").gsub(/_/, ""))
       @back_menu.sensitive = false
@@ -103,10 +103,10 @@ module GTK
     def create_toolbar
       toolbar = Gtk::Toolbar.new
       toolbar.toolbar_style = Gtk::Toolbar::ICONS
-      @back = toolbar.append(Gtk::Stock::GO_BACK, _("Go back")) do 
+      @back = toolbar.append(Gtk::Stock::GO_BACK, _("Go back")) do
 	@undomanager.undo
       end
-      @forward = toolbar.append(Gtk::Stock::GO_FORWARD, _("Go forward")) do 
+      @forward = toolbar.append(Gtk::Stock::GO_FORWARD, _("Go forward")) do
 	@undomanager.redo
       end
 
@@ -119,11 +119,11 @@ module GTK
       @search_box.signal_connect("search") do |w, name_space, method_name|
 	@moduleview.get_nth_page(@moduleview.page).child.search(name_space, method_name)
       end
-      toolbar.append(@search_box, _("Enter search class/module and method/constant"))  
+      toolbar.append(@search_box, _("Enter search class/module and method/constant"))
       Gtk::HandleBox.new.add(toolbar)
     end
 
-    def initialize 
+    def initialize
       super
 
       @conf = ConfManager.new
@@ -134,12 +134,12 @@ module GTK
       @conf["main.width"] ||= 500
       @conf["main.height"] ||= 400
       @conf["leftpane.width"] ||= 250
-      
+
       signal_connect("delete-event") do
         save_conf
         false
       end
-      
+
       signal_connect("destroy") do
         Gtk.main_quit
       end
@@ -192,7 +192,7 @@ module GTK
 	label.mnemonic_widget = widget
         Thread.start do
           widget.realize
-	  widget.window.set_cursor(Gdk::Cursor.new(Gdk::Cursor::WATCH)) 
+	  widget.window.set_cursor(Gdk::Cursor.new(Gdk::Cursor::WATCH))
           widget.update(dag)
           widget.window.set_cursor(nil)
         end

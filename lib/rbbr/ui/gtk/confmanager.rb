@@ -1,6 +1,6 @@
 =begin
 
-  rbbr/ui/gtk/confmanager.rb 
+  rbbr/ui/gtk/confmanager.rb
 
   $Author: mutoh $
   $Date: 2003/12/21 11:15:18 $
@@ -20,7 +20,7 @@ module UI
 module GTK
   DEFAULT_LIBS = %w{glib2 pango gdk_pixbuf2 gtk2 gconf2 gnomecanvas2 libart2 gnome2 rbconfig rbbr cgi ri observer refe}
 
-  begin 
+  begin
     require 'gconf2'
     class GConfDataStore
       APP_DIR = "/apps/rbbr/"
@@ -31,7 +31,7 @@ module GTK
       def [](key)
         @client[APP_DIR + key]
       end
-      
+
       def []=(key, val)
         @client[APP_DIR + key] = val
       end
@@ -47,7 +47,7 @@ module GTK
   rescue LoadError
     class PseudoDataStore
       @@app_dir = ENV["HOME"] || ENV["APPDATA"] || ENV["TEMP"] || ""
-      if /mswin32|mingw/ =~ RUBY_PLATFORM 
+      if /mswin32|mingw/ =~ RUBY_PLATFORM
         @@app_path = File.join(@@app_dir, "/rbbr/rbbr.conf")
       else
         @@app_path = File.join(@@app_dir, "/.rbbr")
@@ -64,7 +64,7 @@ module GTK
       def [](key)
         @@conf[key]
       end
-                                                                                
+
       def []=(key, val)
         @@conf[key] = val
         newdir = @@app_path.split("/")
@@ -80,7 +80,7 @@ module GTK
     end
     DATA_STORE = PseudoDataStore.new
   end
-  
+
   class ConfManager
     def initialize
       @client = DATA_STORE
@@ -92,7 +92,7 @@ module GTK
       end
       require_libs
     end
-    
+
     def [](key)
       @client[key]
     end
